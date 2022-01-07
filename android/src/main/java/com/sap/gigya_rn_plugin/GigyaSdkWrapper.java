@@ -70,6 +70,21 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         gigyaInstance.init(apikey, apiDomain);
     }
 
+    void getSession(Promise promise) {
+        GigyaSdkRNLogger.log("getSession: called");
+        final String sessionJson = mapObjectToJson(gigyaInstance.getSession());
+        promise.resolve(sessionJson);
+    }
+
+    void setSession(@Nonnull String token, @Nonnull String secret, @Nonnull Double expiration, Promise promise) {
+        GigyaSdkRNLogger.log("setSession: called");
+        final SessionInfo session = new SessionInfo(secret, token, expiration.longValue());
+        gigyaInstance.setSession(session);
+
+        final String sessionJson = mapObjectToJson(session);
+        promise.resolve(sessionJson);
+    }
+
     void send(String api, Map<String, Object> parameters, Promise promise) {
         GigyaSdkRNLogger.log("send: called");
         promiseWrapper.promise = promise;
