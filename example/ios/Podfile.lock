@@ -71,7 +71,7 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - Gigya (1.2.1)
-  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.5):
+  - gigya-react-native-plugin-for-sap-customer-data-cloud (0.0.6):
     - Gigya
     - React
   - glog (0.3.5)
