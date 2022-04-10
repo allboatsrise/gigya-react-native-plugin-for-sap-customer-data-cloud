@@ -96,6 +96,11 @@ public class GigyaSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void notifySocialLogin(@Nonnull String params, Promise promise) {
+        gigyaSdk.notifySocialLogin(params, promise);
+    }
+
+    @ReactMethod
     public void addConnection(@Nonnull String provider, @Nonnull String params, Promise promise) {
         gigyaSdk.addConnection(provider, params, promise);
     }

@@ -271,6 +271,44 @@ public class GigyaSdkWrapper<T extends GigyaAccount> {
         });
     }
 
+    void notifySocialLogin(@Nonnull String jsonParameters, Promise promise) {
+        GigyaSdkRNLogger.log("notify social login : called");
+        promiseWrapper.promise = promise;
+        gigyaInstance.notifySocialLogin(mapParams(jsonParameters), new GigyaLoginCallback<T>() {
+            @Override
+            public void onSuccess(T account) {
+                GigyaSdkRNLogger.log("notify social login : success");
+                resolverHelper.clear();
+                promiseWrapper.resolve(account);
+            }
+
+            @Override
+            public void onError(GigyaError gigyaError) {
+                GigyaSdkRNLogger.log("notify social login : error with message: " + gigyaError.getLocalizedMessage());
+                promiseWrapper.reject(gigyaError);
+            }
+
+            @Override
+            public void onConflictingAccounts(@NonNull GigyaApiResponse response, @NonNull ILinkAccountsResolver resolver) {
+                resolverHelper.interrupt = "conflictingAccount";
+                resolverHelper.linkAccountsResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingRegistration(@NonNull GigyaApiResponse response, @NonNull IPendingRegistrationResolver resolver) {
+                resolverHelper.interrupt = "pendingRegistration";
+                resolverHelper.pendingRegistrationResolver = resolver;
+                promiseWrapper.reject(response);
+            }
+
+            @Override
+            public void onPendingVerification(@NonNull GigyaApiResponse response, @Nullable String regToken) {
+                promiseWrapper.reject(response);
+            }
+        });
+    }
+
     void addConnection(@Nonnull String provider, @Nonnull String jsonParameters, Promise promise) {
         GigyaSdkRNLogger.log("addConnection: called");
         promiseWrapper.promise = promise;

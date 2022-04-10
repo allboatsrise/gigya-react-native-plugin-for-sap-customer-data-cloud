@@ -146,6 +146,21 @@ export class GigyaInterface {
     }
 
     /**
+     * Login with social provider when the provider session is available (obtained via specific provider login process).
+     * 
+     * @param {map} params 
+     * @returns Response promise. 
+     */
+    async notifySocialLogin(params) {
+        try {
+            return await GigyaSdk.notifySocialLogin(JSON.stringify(params) ?? "")
+        } catch (e) {
+            const error = new GigyaError(e)
+            throw error
+        }
+    }
+
+    /**
      * Set/update account information.
      * @param {map} params 
      * @returns Response promise.
